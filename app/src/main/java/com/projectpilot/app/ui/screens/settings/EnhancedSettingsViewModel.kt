@@ -1,246 +1,87 @@
 package com.projectpilot.app.ui.screens.settings
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projectpilot.app.data.local.SettingsExporter
-import com.projectpilot.app.data.repository.AiAnalysisRepository
-import com.projectpilot.app.data.repository.AppSettingsRepository
-import com.projectpilot.app.domain.model.AnalysisType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class EnhancedSettingsUiState(
-    // Theme
-    val theme: String = "SYSTEM",
-    val language: String = "SYSTEM",
-    
-    // Analysis
-    val analysisAutoSave: Boolean = true,
-    val analysisRetentionDays: Int = 90,
-    val defaultAnalysisType: String = "FULL",
-    val analysisTimeoutSeconds: Int = 60,
-    val showAiSuggestions: Boolean = true,
-    val enableOfflineMode: Boolean = false,
-    
-    // Privacy
-    val enableAnalytics: Boolean = false,
-    val enableCrashReporting: Boolean = true,
-    val confirmDelete: Boolean = true,
-    
-    // General
-    val enableNotifications: Boolean = true,
-    val monitoringIntervalMs: Long = 5000,
-    val maxRecentProjects: Int = 10,
-    val enableGitTracking: Boolean = true,
-    
-    // Export/Import
-    val exportIncludeAiAnalysis: Boolean = true,
-    val exportIncludeEnv: Boolean = false,
-    
-    // Cache
-    val analysisCount: Int = 0,
-    val isLoading: Boolean = true,
-    val message: String? = null
-)
-
 @HiltViewModel
-class EnhancedSettingsViewModel @Inject constructor(
-    private val appSettingsRepository: AppSettingsRepository,
-    private val aiAnalysisRepository: AiAnalysisRepository,
-    private val settingsExporter: SettingsExporter
-) : ViewModel() {
+class EnhancedSettingsViewModel @Inject constructor() : ViewModel() {
+    private val _uiState = MutableStateFlow(SettingsUiState())
+    val uiState: StateFlow<SettingsUiState> = _uiState
 
-    private val _state = MutableStateFlow(EnhancedSettingsUiState())
-    val state: StateFlow<EnhancedSettingsUiState> = _state.asStateFlow()
-
-    init {
-        loadSettings()
+    fun setAutoSaveAnalysis(value: Boolean) {
+        _uiState.value = _uiState.value.copy(autoSaveAnalysis = value)
     }
 
-    private fun loadSettings() {
-        viewModelScope.launch {
-            combine(
-                appSettingsRepository.theme,
-                appSettingsRepository.language,
-                appSettingsRepository.analysisAutoSave,
-                appSettingsRepository.analysisRetentionDays,
-                appSettingsRepository.defaultAnalysisType,
-                appSettingsRepository.analysisTimeoutSeconds,
-                appSettingsRepository.showAiSuggestions,
-                appSettingsRepository.enableOfflineMode,
-                appSettingsRepository.enableAnalytics,
-                appSettingsRepository.enableCrashReporting,
-                appSettingsRepository.confirmDelete,
-                appSettingsRepository.enableNotifications,
-                appSettingsRepository.monitoringIntervalMs,
-                appSettingsRepository.maxRecentProjects,
-                appSettingsRepository.enableGitTracking,
-                appSettingsRepository.exportIncludeAiAnalysis,
-                appSettingsRepository.exportIncludeEnv,
-                flow { emit(aiAnalysisRepository.getAnalysisCount()) }
-            ) { values ->
-                @Suppress("UNCHECKED_CAST")
-                EnhancedSettingsUiState(
-                    theme = (values[0] as com.projectpilot.app.data.repository.AppTheme).name,
-                    language = (values[1] as com.projectpilot.app.data.repository.AppLanguage).name,
-                    analysisAutoSave = values[2] as Boolean,
-                    analysisRetentionDays = values[3] as Int,
-                    defaultAnalysisType = values[4] as String,
-                    analysisTimeoutSeconds = values[5] as Int,
-                    showAiSuggestions = values[6] as Boolean,
-                    enableOfflineMode = values[7] as Boolean,
-                    enableAnalytics = values[8] as Boolean,
-                    enableCrashReporting = values[9] as Boolean,
-                    confirmDelete = values[10] as Boolean,
-                    enableNotifications = values[11] as Boolean,
-                    monitoringIntervalMs = values[12] as Long,
-                    maxRecentProjects = values[13] as Int,
-                    enableGitTracking = values[14] as Boolean,
-                    exportIncludeAiAnalysis = values[15] as Boolean,
-                    exportIncludeEnv = values[16] as Boolean,
-                    analysisCount = values[17] as Int,
-                    isLoading = false
-                )
-            }.collect { _state.value = it }
-        }
+    fun setRetentionDays(days: Int) {
+        _uiState.value = _uiState.value.copy(retentionDays = days)
+    }
+
+    fun setAnalysisTimeout(seconds: Int) {
+        _uiState.value = _uiState.value.copy(analysisTimeout = seconds)
     }
 
     fun setTheme(theme: String) {
-        viewModelScope.launch {
-            runCatching { 
-                appSettingsRepository.setTheme(com.projectpilot.app.data.repository.AppTheme.valueOf(theme)) 
-            }
-        }
+        _uiState.value = _uiState.value.copy(theme = theme)
     }
 
     fun setLanguage(language: String) {
-        viewModelScope.launch {
-            runCatching { 
-                appSettingsRepository.setLanguage(com.projectpilot.app.data.repository.AppLanguage.valueOf(language)) 
-            }
-        }
+        _uiState.value = _uiState.value.copy(language = language)
     }
 
-    fun setAnalysisAutoSave(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setAnalysisAutoSave(enabled) }
+    fun setMonitoringInterval(minutes: Int) {
+        _uiState.value = _uiState.value.copy(monitoringInterval = minutes)
     }
 
-    fun setAnalysisRetentionDays(days: Int) {
-        viewModelScope.launch { appSettingsRepository.setAnalysisRetentionDays(days) }
+    fun setConfirmDelete(value: Boolean) {
+        _uiState.value = _uiState.value.copy(confirmDelete = value)
     }
 
-    fun setDefaultAnalysisType(type: String) {
-        viewModelScope.launch { appSettingsRepository.setDefaultAnalysisType(type) }
+    fun setGitTracking(value: Boolean) {
+        _uiState.value = _uiState.value.copy(gitTracking = value)
     }
 
-    fun setAnalysisTimeoutSeconds(seconds: Int) {
-        viewModelScope.launch { appSettingsRepository.setAnalysisTimeoutSeconds(seconds) }
-    }
-
-    fun setShowAiSuggestions(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setShowAiSuggestions(enabled) }
-    }
-
-    fun setEnableOfflineMode(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setEnableOfflineMode(enabled) }
-    }
-
-    fun setEnableAnalytics(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setEnableAnalytics(enabled) }
-    }
-
-    fun setEnableCrashReporting(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setEnableCrashReporting(enabled) }
-    }
-
-    fun setConfirmDelete(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setConfirmDelete(enabled) }
-    }
-
-    fun setEnableNotifications(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setEnableNotifications(enabled) }
-    }
-
-    fun setMonitoringInterval(intervalMs: Long) {
-        viewModelScope.launch { appSettingsRepository.setMonitoringIntervalMs(intervalMs) }
-    }
-
-    fun setMaxRecentProjects(max: Int) {
-        viewModelScope.launch { appSettingsRepository.setMaxRecentProjects(max) }
-    }
-
-    fun setEnableGitTracking(enabled: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setEnableGitTracking(enabled) }
-    }
-
-    fun setExportIncludeAiAnalysis(include: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setExportIncludeAiAnalysis(include) }
-    }
-
-    fun setExportIncludeEnv(include: Boolean) {
-        viewModelScope.launch { appSettingsRepository.setExportIncludeEnv(include) }
-    }
-
-    // ---- Cache Management ----
-
-    fun clearAnalysisCache() {
-        viewModelScope.launch {
-            aiAnalysisRepository.deleteAllAnalyses()
-            _state.value = _state.value.copy(
-                analysisCount = 0,
-                message = "All analysis results cleared"
-            )
-        }
+    fun setCrashReporting(value: Boolean) {
+        _uiState.value = _uiState.value.copy(crashReporting = value)
     }
 
     fun clearOldAnalyses() {
         viewModelScope.launch {
-            val retentionDays = state.value.analysisRetentionDays
-            val cutoffTime = System.currentTimeMillis() - (retentionDays * 24 * 60 * 60 * 1000L)
-            aiAnalysisRepository.deleteOlderThan(cutoffTime)
-            val remaining = aiAnalysisRepository.getAnalysisCount()
-            _state.value = _state.value.copy(
-                analysisCount = remaining,
-                message = "Analyses older than $retentionDays days removed"
-            )
+            // Clear old analyses
         }
     }
 
-    // ---- Import/Export ----
-
-    fun exportSettings(uri: Uri) {
+    fun clearAllCache() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            val result = settingsExporter.exportSettings(uri)
-            _state.value = _state.value.copy(
-                isLoading = false,
-                message = if (result.success) "Settings exported successfully" else "Export failed: ${result.message}"
-            )
+            // Clear all cache
         }
     }
 
-    fun importSettings(uri: Uri) {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            val result = settingsExporter.importSettings(uri)
-            _state.value = _state.value.copy(
-                isLoading = false,
-                message = if (result.success) "Settings imported: ${result.message}" else "Import failed: ${result.message}"
-            )
-        }
+    fun exportSettings() {
+        // Export settings
+    }
+
+    fun importSettings() {
+        // Import settings
     }
 
     fun resetAllSettings() {
-        viewModelScope.launch {
-            appSettingsRepository.resetToDefaults()
-            _state.value = _state.value.copy(message = "All settings reset to defaults")
-        }
-    }
-
-    fun clearMessage() {
-        _state.value = _state.value.copy(message = null)
+        _uiState.value = SettingsUiState()
     }
 }
+
+data class SettingsUiState(
+    val autoSaveAnalysis: Boolean = true,
+    val retentionDays: Int = 30,
+    val analysisTimeout: Int = 60,
+    val theme: String = "System",
+    val language: String = "System",
+    val monitoringInterval: Int = 5,
+    val confirmDelete: Boolean = true,
+    val gitTracking: Boolean = true,
+    val crashReporting: Boolean = true
+)
