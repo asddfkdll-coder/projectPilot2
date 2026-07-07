@@ -2,10 +2,8 @@ package com.projectpilot.app.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 
 @Entity(tableName = "ai_analysis_results")
-@Serializable
 data class AiAnalysisResult(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
