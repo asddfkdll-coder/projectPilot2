@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- تطبيق -->
+    <string name="app_name">ProjectPilot</string>
+    <string name="app_version">الإصدار</string>
+    
+    <!-- الشاشة الرئيسية -->
+    <string name="home_title">المشاريع</string>
+    <string name="search_projects">ابحث في المشاريع…</string>
+    <string name="add_project">إضافة مشروع</string>
+    <string name="no_projects">لا توجد مشاريع حتى الآن</string>
+    <string name="add_folder_to_start">أضف مجلداً لبدء تتبعه</string>
+    <string name="add_project_button">إضافة مشروع</string>
+    <string name="recent_projects">المشاريع الأخيرة</string>
+    <string name="all_projects">جميع المشاريع</string>
+    <string name="favorites">المفضلة</string>
+    <string name="no_favorites">لا توجد مشاريع مفضلة</string>
+    
+    <!-- إضافة/مسح المشاريع -->
+    <string name="add_scan_project">إضافة / مسح مشروع</string>
+    <string name="folder_path">مسار المجلد</string>
+    <string name="add_this_folder">إضافة هذا المجلد</string>
+    <string name="scan_tree">مسح الشجرة</string>
+    <string name="scanning">جاري المسح…</string>
+    <string name="import_all">استيراد الكل</string>
+    <string name="projects_found">تم العثور على %d مشروع(ات)</string>
+    <string name="no_projects_found">لم يتم العثور على مشاريع</string>
+    <string name="project_already_exists">المشروع موجود بالفعل</string>
+    <string name="invalid_folder">مجلد غير صحيح</string>
+    <string name="imported_successfully">تم استيراد %d مشروع(ات) بنجاح</string>
+    <string name="choose_folder">اختر مجلداً</string>
+    
+    <!-- تفاصيل المشروع -->
+    <string name="project_details">تفاصيل المشروع</string>
+    <string name="project_name">اسم المشروع</string>
+    <string name="project_type">نوع المشروع</string>
+    <string name="project_path">المسار</string>
+    <string name="framework">الإطار العمل</string>
+    <string name="install_command">أمر التثبيت</string>
+    <string name="run_command">أمر التشغيل</string>
+    <string name="default_port">المنفذ الافتراضي</string>
+    <string name="notes">ملاحظات</string>
+    <string name="edit_project">تعديل المشروع</string>
+    <string name="delete_project">حذف المشروع</string>
+    <string name="delete_confirm">هل أنت متأكد من رغبتك في حذف هذا المشروع؟</string>
+    <string name="project_deleted">تم حذف المشروع</string>
+    <string name="project_updated">تم تحديث المشروع</string>
+    
+    <!-- الوصفات (Recipes) -->
+    <string name="recipes">الوصفات</string>
+    <string name="run_recipe">تشغيل الوصفة</string>
+    <string name="confirm_command_execution">تأكيد تنفيذ الأمر</string>
+    <string name="are_you_sure_execute_command">هل أنت متأكد من رغبتك في تنفيذ الأمر التالي؟</string>
+    <string name="recipe_sent_to_termux">▶ تم إرسال الوصفة إلى Termux</string>
+    <string name="termux_not_installed">Termux غير مثبت</string>
+    <string name="execution_failed">فشل التنفيذ</string>
+    <string name="confirm_button">تأكيد</string>
+    
+    <!-- معلومات Git -->
+    <string name="git_info">معلومات Git</string>
+    <string name="not_git_repository">هذا المجلد ليس مستودع Git</string>
+    <string name="last_commit">آخر التزام</string>
+    <string name="changed_files">الملفات المتغيرة</string>
+    <string name="file_s">ملف(ات)</string>
+    <string name="remote">البعيد</string>
+    <string name="branch">الفرع</string>
+    <string name="commits_ahead">التزامات متقدمة</string>
+    
+    <!-- الإعدادات -->
+    <string name="settings">الإعدادات</string>
+    <string name="auto_backup">النسخ الاحتياطي التلقائي</string>
+    <string name="auto_backup_description">حفظ قائمة المشاريع والمتغيرات المشفرة كل 24 ساعة</string>
+    <string name="backup_enabled">النسخ الاحتياطي مفعل (كل 24 ساعة)</string>
+    <string name="backup_disabled">النسخ الاحتياطي معطل</string>
+    <string name="backup_now">نسخ احتياطي الآن</string>
+    <string name="backup_queued">تم وضع النسخة الاحتياطية في قائمة الانتظار</string>
+    <string name="backups">النسخ الاحتياطية</string>
+    <string name="no_backups">لا توجد نسخ احتياطية حتى الآن</string>
+    <string name="share_backup">مشاركة النسخة الاحتياطية</string>
+    <string name="termux_setup">إعداد Termux</string>
+    <string name="termux_setup_step1">1. ثبت Termux من F-Droid (وليس من Play Store)</string>
+    <string name="termux_setup_step2">2. في Termux:</string>
+    <string name="termux_setup_command">echo "allow-external-apps = true" >> ~/.termux/termux.properties\ntermux-reload-settings</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">English</string>
+    <string name="theme">المظهر</string>
+    <string name="light_theme">فاتح</string>
+    <string name="dark_theme">غامق</string>
+    <string name="system_theme">النظام</string>
+    <string name="about">حول التطبيق</string>
+    
+    <!-- الأزرار والإجراءات الشائعة -->
+    <string name="cancel">إلغاء</string>
+    <string name="delete">حذف</string>
+    <string name="save">حفظ</string>
+    <string name="back">رجوع</string>
+    <string name="ok">حسناً</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="close">إغلاق</string>
+    <string name="edit">تعديل</string>
+    <string name="open">فتح</string>
+    <string name="search">بحث</string>
+    <string name="loading">جاري التحميل…</string>
+    <string name="error">خطأ</string>
+    <string name="success">نجح</string>
+    <string name="warning">تحذير</string>
+    <string name="info">معلومة</string>
+    
+    <!-- رسائل الخطأ -->
+    <string name="error_loading_projects">خطأ في تحميل المشاريع</string>
+    <string name="error_saving_project">خطأ في حفظ المشروع</string>
+    <string name="error_deleting_project">خطأ في حذف المشروع</string>
+    <string name="error_network">خطأ في الاتصال بالشبكة</string>
+    <string name="error_permission_denied">تم رفض الصلاحية</string>
+    <string name="error_file_not_found">الملف غير موجود</string>
+    <string name="error_invalid_input">إدخال غير صحيح</string>
+    
+    <!-- رسائل النجاح -->
+    <string name="success_project_added">تم إضافة المشروع بنجاح</string>
+    <string name="success_project_updated">تم تحديث المشروع بنجاح</string>
+    <string name="success_project_deleted">تم حذف المشروع بنجاح</string>
+    <string name="success_backup_created">تم إنشاء النسخة الاحتياطية بنجاح</string>
+    
+    <!-- معلومات إضافية -->
+    <string name="version">الإصدار</string>
+    <string name="developer">المطور</string>
+    <string name="license">الرخصة</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="terms_of_service">شروط الخدمة</string>
+    <string name="help">مساعدة</string>
+    <string name="feedback">إرسال ملاحظات</string>
+    <string name="rate_app">قيّم التطبيق</string>
+</resources>
