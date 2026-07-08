@@ -12,19 +12,28 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProjectDao {
     @Query("SELECT * FROM projects ORDER BY createdAt DESC")
-    fun getAllProjects(): Flow<List<Project>>
+    fun observeAll(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE id = :id")
-    suspend fun getProjectById(id: Long): Project?
+    suspend fun getById(id: Long): Project?
+
+    @Query("SELECT * FROM projects WHERE path = :path")
+    suspend fun getByPath(path: String): Project?
+
+    @Query("SELECT * FROM projects WHERE isActive = 1 ORDER BY createdAt DESC")
+    fun getActiveProjects(): Flow<List<Project>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(project: Project): Long
+    suspend fun upsert(project: Project): Long
 
     @Update
     suspend fun update(project: Project)
 
     @Delete
     suspend fun delete(project: Project)
+
+    @Query("DELETE FROM projects WHERE id = :id")
+    suspend fun deleteById(id: Long)
 
     @Query("SELECT COUNT(*) FROM projects")
     suspend fun getProjectCount(): Int
