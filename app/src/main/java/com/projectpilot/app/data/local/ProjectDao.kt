@@ -20,7 +20,8 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE path = :path")
     suspend fun getByPath(path: String): Project?
 
-    @Query("SELECT * FROM projects WHERE isActive = 1 ORDER BY createdAt DESC")
+    // Use isFavorite because the Project entity defines isFavorite (not isActive)
+    @Query("SELECT * FROM projects WHERE isFavorite = 1 ORDER BY createdAt DESC")
     fun getActiveProjects(): Flow<List<Project>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
