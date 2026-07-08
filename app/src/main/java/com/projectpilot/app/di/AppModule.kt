@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.projectpilot.app.data.local.AppDatabase
 import com.projectpilot.app.data.local.AiAnalysisDao
+import com.projectpilot.app.data.local.ProjectDao
 import com.projectpilot.app.data.local.SettingsExporter
 import com.projectpilot.app.data.ai.AiAnalysisService
 import com.projectpilot.app.data.ai.AiProviderConfig
@@ -27,6 +28,11 @@ object AppModule {
             AppDatabase::class.java,
             AppDatabase.NAME
         ).build()
+    }
+
+    @Provides
+    fun provideProjectDao(database: AppDatabase): ProjectDao {
+        return database.projectDao()
     }
 
     @Provides
