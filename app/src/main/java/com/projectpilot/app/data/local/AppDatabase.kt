@@ -3,6 +3,7 @@ package com.projectpilot.app.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.projectpilot.app.domain.model.AiAnalysisResult
 
 @Database(
     entities = [AiAnalysisResult::class],
@@ -12,7 +13,7 @@ import androidx.room.TypeConverters
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun aiAnalysisDao(): AiAnalysisDao
-    
+
     companion object {
         const val NAME = "projectpilot_database"
     }
