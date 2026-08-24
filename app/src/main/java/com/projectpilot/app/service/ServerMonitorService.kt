@@ -11,6 +11,7 @@ import com.projectpilot.app.R
 import com.projectpilot.app.data.repository.ProjectRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import java.io.File
 import javax.inject.Inject
 
@@ -41,8 +42,8 @@ class ServerMonitorService : Service() {
             loopJob = scope.launch { 
                 // Initialize from DB on first run
                 if (tracked.isEmpty()) {
-                    val active = repo.getActiveProjects()
-                    active.forEach { it.lastPid?.let { pid -> tracked.add(pid) } }
+                    val active = repo.getActiveProjects().first()
+                    active.forEach { project -> project.lastPid?.let { pid -> tracked.add(pid) } }
                 }
                 loop() 
             }
@@ -67,9 +68,9 @@ class ServerMonitorService : Service() {
             if (died.isNotEmpty()) {
                 // Update database to clear PIDs for died processes
                 scope.launch {
-                    val active = repo.getActiveProjects()
-                    active.filter { it.lastPid in died }.forEach {
-                        repo.update(it.copy(lastPid = null))
+                    val active = repo.getActiveProjects().first()
+                    active.filter { project -> project.lastPid in died }.forEach { project ->
+                        repo.update(project.copy(lastPid = null))
                     }
                 }
             }
